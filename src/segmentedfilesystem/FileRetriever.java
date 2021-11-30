@@ -2,6 +2,12 @@ package segmentedfilesystem;
 import java.net.*;
 import java.io.*;
 
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.SocketException;
+import java.net.InetAddress;
+
 public class FileRetriever {
 
 	public String server;
@@ -15,7 +21,7 @@ public class FileRetriever {
         //...
 		this.server = server;
 		this.port = port;
-		address = InetAddress.getByName(server);
+
 	}
 
 	public void downloadFiles() {
@@ -31,12 +37,23 @@ public class FileRetriever {
         // PacketManager.allPacketsReceived() that you could
         // call for that, but there are a bunch of possible
         // ways.
-
-
-
-		byte[] buffer = new byte[buffer_size];
-		socket = new DatagramSocket(buffer, 0, address, port);
-		DatagramPacket packet = new DatagramPacket(buffer, 0, server, port);
+		boolean correct = false;
+		try{
+			address = InetAddress.getByName(server);
+			byte[] buffer = new byte[buffer_size];
+			socket = new DatagramSocket();
+			DatagramPacket packet = new DatagramPacket(buffer, buffer_size, address, port);
+			socket.send(packet);
+			while(correct != true){
+				buffer = new byte[1028];
+				packet = new DatagramPacket(buffer, buffer.length);
+				socket.receive(packet);
+			}
+		}catch (SocketException e) {
+			System.out.println(e.getMessage());
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
 
 	}
 

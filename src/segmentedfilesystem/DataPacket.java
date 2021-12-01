@@ -3,6 +3,7 @@ package segmentedfilesystem;
 public class DataPacket {
     private byte[] byteArr;
     private int packetLen;
+    public int finalID;
 
     public int getId() {
         return Byte.toUnsignedInt(byteArr[1]);
@@ -10,10 +11,6 @@ public class DataPacket {
 
     public int getStatusByte() {
         return Byte.toUnsignedInt(byteArr[0]);
-    }
-
-    public boolean LastPacket() {
-        return (getStatusByte() % 4 == 3);
     }
 
     public DataPacket(byte[] data, int length) {
@@ -45,9 +42,4 @@ public class DataPacket {
         int packetNumber = firstInt * 256 + secondInt;
         return packetNumber;
     }
-
-
-
-
-
 }

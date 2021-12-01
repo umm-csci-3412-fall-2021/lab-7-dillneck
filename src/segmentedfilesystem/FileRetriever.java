@@ -37,24 +37,24 @@ public class FileRetriever {
         // PacketManager.allPacketsReceived() that you could
         // call for that, but there are a bunch of possible
         // ways.
-		boolean correct = false;
+		PacketManager packetManager = new PacketManager();
 		try{
 			address = InetAddress.getByName(server);
 			byte[] buffer = new byte[buffer_size];
 			socket = new DatagramSocket();
 			DatagramPacket packet = new DatagramPacket(buffer, buffer_size, address, port);
 			socket.send(packet);
-			while(correct != true){
-				buffer = new byte[1028];
-				packet = new DatagramPacket(buffer, buffer.length);
+			while(!packetManager.allComplete()){
+				byte[] data = new byte[buffer_size];
+				packet = new DatagramPacket(data, buffer_size);
 				socket.receive(packet);
+				packetManager.receivePacket(packet);
 			}
-		}catch (SocketException e) {
-			System.out.println(e.getMessage());
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
 
+			//packetManager.saveFiles();
+		} catch(IOException ioe) {
+			ioe.printStackTrace();
+		}
 	}
 
 }

@@ -35,11 +35,14 @@ public class ReceivedFile {
     public int finalFileSize(){
         int num=0;
         for(Map.Entry<Integer, byte[]> entry : maps.entrySet()){
+            System.out.println(entry.getValue().length +" "+num);
+
             num+=entry.getValue().length;
             System.out.println(num);
         }
             return num;
     }
+
 
     public boolean isComplete(){
         if(finalID == 0){

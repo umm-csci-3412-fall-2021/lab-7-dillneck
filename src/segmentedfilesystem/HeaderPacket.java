@@ -7,21 +7,14 @@ public class HeaderPacket {
     private String fileName;
     private int len;
 
+    //Constructor for basic data required
     public HeaderPacket(byte[] arr, int packetLen) {
         this.byteArr = arr;
         this.len = packetLen;
         this.packetLen = arr.length;
     }
 
-    public void getPacketNumber() {
-        byte firstByte = byteArr[2];
-        byte secondByte = byteArr[3];
-        int firstInt = Byte.toUnsignedInt(firstByte);
-        int secondInt = Byte.toUnsignedInt(secondByte);
-        int packetNumber = firstInt * 256 + secondInt;
-        this.fileID = packetNumber;
-    }
-
+    //Grabs the rest of the data (excluding info at the beginning) from the header packet (this is the name)
     public void setFileName(){
         byte[] name = new byte[len-2];
         for (int i = 0; i < len-2; i++) {
@@ -30,10 +23,12 @@ public class HeaderPacket {
         this.fileName = new String(name);
     }
 
+    //getter for fileID
     public int getFileID() {
         return fileID;
     }
 
+    //getter for fileName
     public String getFileName() {
         return fileName;
     }

@@ -40,12 +40,15 @@ public class FileRetriever {
 			socket = new DatagramSocket();
 			DatagramPacket packet = new DatagramPacket(buffer, buffer_size, address, port);
 			socket.send(packet);
+			//Will run until packetManager.allComplete() returns true.
+			//This would mean that all three files have finished being organized.
 			while(!packetManager.allComplete()){
 				byte[] data = new byte[buffer_size];
 				packet = new DatagramPacket(data, buffer_size);
 				socket.receive(packet);
 				packetManager.receivePacket(packet);
 			}
+			//Saves files once packetManager.allComplete == true
 			packetManager.saveFiles();
 		} catch(IOException ioe) {
 			ioe.printStackTrace();

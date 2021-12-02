@@ -5,27 +5,23 @@ public class DataPacket {
     private int packetLen;
     public int finalID;
 
+    //Grabs the byte and turns it into an unsigned Int
     public int getId() {
         return Byte.toUnsignedInt(byteArr[1]);
     }
 
+    //Grabs the status byte and turns it into an unsigned Int
     public int getStatusByte() {
         return Byte.toUnsignedInt(byteArr[0]);
     }
 
+    //constructor with needed basic data
     public DataPacket(byte[] data, int length) {
         this.byteArr = data;
         this.packetLen = length;
     }
 
-    public String fileName(){
-        byte[] name = new byte[packetLen-2];
-        for (int i = 0; i < packetLen-2; i++) {
-            name[i] = byteArr[i+2];
-        }
-        return new String(name);
-    }
-
+    //Grabs the data from a packet, excluding the information bytes at the front
     public byte[] getPacketData() {
         byte[] packetData = new byte[packetLen-4];
         for (int i = 4; i < packetLen; i++) {
@@ -34,6 +30,7 @@ public class DataPacket {
         return packetData;
     }
 
+    //gets the two byte integer in base 256 for the packet's number
     public int getPacketNumber() {
         byte firstByte = byteArr[2];
         byte secondByte = byteArr[3];

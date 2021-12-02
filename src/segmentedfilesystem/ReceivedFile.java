@@ -14,6 +14,7 @@ public class ReceivedFile {
     public boolean finalPacket = false;
     public byte[] byteArrLast;
 
+    //constructor with basic required data
     public ReceivedFile(int fileID) {
         this.fileID = fileID;
         this.full = false;
@@ -21,19 +22,23 @@ public class ReceivedFile {
         this.maps = new TreeMap<>();
     }
 
+    //getter for fileID
     public int getFileID() {
         return fileID;
     }
 
+    //Setter for name when receiving header packet
     public void setName(String name) {
         this.name = name;
     }
 
+    //adds packets to their respective treemaps, keypaired of their packet# and data
     public void add(DataPacket packet){
         maps.put(packet.getPacketNumber(), packet.getPacketData());
         isComplete();
     }
 
+    //Uses ByteArrayOutputStream to set each file's bytes into a byte array for downloading
     public void toByteArray(){
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
@@ -46,8 +51,8 @@ public class ReceivedFile {
         }
     }
 
+    //Writes the file using the data from the byteArrLast
     public void writeFile() {
-        toByteArray();
         try (FileOutputStream outputStream = new FileOutputStream(name)) {
             outputStream.write(byteArrLast);
         } catch (Exception exception) {
@@ -55,6 +60,7 @@ public class ReceivedFile {
         }
     }
 
+    //checks if a file is done receiving packets by running through every entry of a maps entry until the finalID
     public boolean isComplete(){
         if(finalID == 0){
             this.full = true;
@@ -64,9 +70,9 @@ public class ReceivedFile {
             if (!maps.containsKey(i)) {
                 return false;
             }
-
         }
         this.full = true;
+        toByteArray();
         return true;
     }
 }

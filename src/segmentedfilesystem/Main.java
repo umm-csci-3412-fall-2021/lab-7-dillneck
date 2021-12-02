@@ -16,7 +16,6 @@ public class Main {
         if (args.length >= 2) {
             port = Integer.parseInt(args[1]);
         }
-
         FileRetriever fileRetriever = new FileRetriever(server, port);
         fileRetriever.downloadFiles();
     }

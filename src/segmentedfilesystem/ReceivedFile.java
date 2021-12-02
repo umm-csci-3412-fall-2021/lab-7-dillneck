@@ -1,6 +1,7 @@
 package segmentedfilesystem;
 
-import java.util.Map;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -11,6 +12,7 @@ public class ReceivedFile {
     public SortedMap<Integer, byte[]> maps;
     public boolean full = false;
     public boolean finalPacket = false;
+    public byte[] byteArrLast;
 
     public ReceivedFile(int fileID) {
         this.fileID = fileID;
@@ -32,17 +34,26 @@ public class ReceivedFile {
         isComplete();
     }
 
-    public int finalFileSize(){
-        int num=0;
-        for(Map.Entry<Integer, byte[]> entry : maps.entrySet()){
-            System.out.println(entry.getValue().length +" "+num);
-
-            num+=entry.getValue().length;
-            System.out.println(num);
+    public void toByteArray(){
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            for (int i = 0; i <= finalID; i++) {
+                outputStream.write(maps.get(i));
+            }
+            byteArrLast = outputStream.toByteArray();
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
-            return num;
     }
 
+    public void writeFile() {
+        toByteArray();
+        try (FileOutputStream outputStream = new FileOutputStream(name)) {
+            outputStream.write(byteArrLast);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
 
     public boolean isComplete(){
         if(finalID == 0){
@@ -57,7 +68,5 @@ public class ReceivedFile {
         }
         this.full = true;
         return true;
-
     }
-
 }

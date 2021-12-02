@@ -12,7 +12,6 @@ public class PacketManager {
         boolean find = false;
         int currentID;
 
-
         if (statusByte % 2 == 0) {
             HeaderPacket header = new HeaderPacket(bytes, packet.getLength());
             for (int i = 0; i < files.size(); i++) {
@@ -77,4 +76,9 @@ public class PacketManager {
         return true;
     }
 
+    public void saveFiles(){
+        for (int i = 0; i < files.size(); i++) {
+            files.get(i).writeFile();
+        }
+    }
 }

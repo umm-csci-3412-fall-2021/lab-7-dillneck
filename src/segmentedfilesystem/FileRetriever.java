@@ -1,15 +1,11 @@
 package segmentedfilesystem;
-import java.net.*;
-import java.io.*;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.SocketException;
 import java.net.InetAddress;
 
 public class FileRetriever {
-
 	public String server;
 	public int port;
 	public int buffer_size = 1028;
@@ -50,11 +46,11 @@ public class FileRetriever {
 				socket.receive(packet);
 				packetManager.receivePacket(packet);
 			}
-
-			//packetManager.saveFiles();
+			packetManager.saveFiles();
 		} catch(IOException ioe) {
 			ioe.printStackTrace();
 		}
+
 	}
 
 }

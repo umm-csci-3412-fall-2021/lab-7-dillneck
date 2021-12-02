@@ -1,5 +1,4 @@
 package segmentedfilesystem;
-
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.util.SortedMap;
